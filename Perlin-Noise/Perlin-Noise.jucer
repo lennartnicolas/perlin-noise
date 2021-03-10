@@ -4,6 +4,8 @@
               addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1">
   <MAINGROUP id="s7QHDe" name="Perlin-Noise">
     <GROUP id="{90C836C5-32C6-9161-A6F8-95FBC44CD2AE}" name="Source">
+      <FILE id="GhBMOC" name="WaveGUI.cpp" compile="1" resource="0" file="Source/WaveGUI.cpp"/>
+      <FILE id="X06ono" name="WaveGUI.h" compile="0" resource="0" file="Source/WaveGUI.h"/>
       <FILE id="rZw1qZ" name="PerlinNoise.cpp" compile="1" resource="0" file="Source/PerlinNoise.cpp"/>
       <FILE id="XJsIAl" name="PerlinNoise.h" compile="0" resource="0" file="Source/PerlinNoise.h"/>
       <FILE id="ibVsdY" name="PerlinWave.h" compile="0" resource="0" file="Source/PerlinWave.h"/>

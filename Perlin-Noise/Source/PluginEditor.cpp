@@ -13,9 +13,12 @@
 PerlinNoiseAudioProcessorEditor::PerlinNoiseAudioProcessorEditor (PerlinNoiseAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p)
 {
-    
-    setSize (256, 256);
+    addAndMakeVisible(_waveTableObject);
+    setSize (700, 500);
+
 }
+
+
 
 PerlinNoiseAudioProcessorEditor::~PerlinNoiseAudioProcessorEditor()
 {
@@ -25,15 +28,9 @@ PerlinNoiseAudioProcessorEditor::~PerlinNoiseAudioProcessorEditor()
 void PerlinNoiseAudioProcessorEditor::paint (juce::Graphics& g)
 {
 
-    for(int x = 0; x < getWidth(); x++){
-        g.setColour(juce::Colours::white);
-        int sampleIndex = x % audioProcessor.getWaveTable().getNumSamples();
-        auto y = audioProcessor.getWaveTable().getSample(0, sampleIndex);
-        g.drawEllipse(x, y * getWidth(), 2, 2, 1);
-    }
 }
 
 void PerlinNoiseAudioProcessorEditor::resized()
 {
-    
+    _waveTableObject.setBounds(0, 0, getWidth(), getHeight() / 2);
 }

@@ -22,7 +22,6 @@ PerlinNoiseAudioProcessor::PerlinNoiseAudioProcessor()
                        )
 #endif
 {
-    createWavetable();
 }
 
 PerlinNoiseAudioProcessor::~PerlinNoiseAudioProcessor()
@@ -94,8 +93,7 @@ void PerlinNoiseAudioProcessor::changeProgramName (int index, const juce::String
 //==============================================================================
 void PerlinNoiseAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    _waveTableOscillator = new PerlinWave(_pnTable);
-    _waveTableOscillator->setFrequency(100, sampleRate);
+
 }
 
 void PerlinNoiseAudioProcessor::releaseResources()
@@ -141,9 +139,6 @@ void PerlinNoiseAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, 
     {
         auto* channelData = buffer.getWritePointer (channel);
                 
-        for(auto sample = 0; sample < buffer.getNumSamples(); ++sample){
-            channelData[sample] = _waveTableOscillator->getNextSample();
-        }
     }
 }
 
@@ -180,21 +175,4 @@ juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 }
 
 //==============================================================================
-void PerlinNoiseAudioProcessor::createWavetable()
-{
-    _pnTable.setSize(1, (int) _pnTableSize + 1);
-    _pnTable.clear();
-    
-    auto* samples = _pnTable.getWritePointer(0);
-    
-    for(int i = 0; i < _pnTableSize; i++)
-    {
-        auto sample = _pnNoise.noise(_x);
-        samples[i] += (float) sample;
-        _x += 0.01;
-    }
-    
-    samples[_pnTableSize] = samples[0];
-    
-}
 

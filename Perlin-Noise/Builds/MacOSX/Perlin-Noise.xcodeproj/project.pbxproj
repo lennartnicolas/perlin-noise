@@ -77,6 +77,10 @@
 			isa = PBXBuildFile;
 			fileRef = DC8CB2C3EAD9274EA49B36D7;
 		};
+		121BF9AC777206BE1B0432C9 = {
+			isa = PBXBuildFile;
+			fileRef = 3840688216BA607BDD78147A;
+		};
 		9A3F9B0543946F22707F2A23 = {
 			isa = PBXBuildFile;
 			fileRef = FDA99A3EEFEBD66802B52052;
@@ -214,6 +218,13 @@
 			path = "/Users/lennartnicolas/Documents/JUCE/modules/juce_audio_processors";
 			sourceTree = "<absolute>";
 		};
+		1A46CB9C07178A5D52CC2195 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = WaveGUI.h;
+			path = ../../Source/WaveGUI.h;
+			sourceTree = "SOURCE_ROOT";
+		};
 		1C774EBB718A80EF866B6782 = {
 			isa = PBXFileReference;
 			lastKnownFileType = file;
@@ -233,6 +244,13 @@
 			lastKnownFileType = sourcecode.c.h;
 			name = PluginEditor.h;
 			path = ../../Source/PluginEditor.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		3840688216BA607BDD78147A = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = WaveGUI.cpp;
+			path = ../../Source/WaveGUI.cpp;
 			sourceTree = "SOURCE_ROOT";
 		};
 		3D0510ED4B993A2004FC4AA8 = {
@@ -368,13 +386,6 @@
 			path = ../../Source/PerlinNoise.h;
 			sourceTree = "SOURCE_ROOT";
 		};
-		B007BABAAA0EA5969CFBB186 = {
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
-			name = PerlinWave.cpp;
-			path = ../../Source/PerlinWave.cpp;
-			sourceTree = "SOURCE_ROOT";
-		};
 		BBFF2F75AD08DC1DCF1E99A2 = {
 			isa = PBXFileReference;
 			lastKnownFileType = sourcecode.cpp.objcpp;
@@ -423,6 +434,13 @@
 			name = "juce_audio_formats";
 			path = "/Users/lennartnicolas/Documents/JUCE/modules/juce_audio_formats";
 			sourceTree = "<absolute>";
+		};
+		B007BABAAA0EA5969CFBB186 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = PerlinWave.cpp;
+			path = ../../Source/PerlinWave.cpp;
+			sourceTree = "SOURCE_ROOT";
 		};
 		B1784DEA5D865DF40562BFE2 = {
 			isa = PBXFileReference;
@@ -595,6 +613,8 @@
 		0D7000FB566FA84FFA5CFCBA = {
 			isa = PBXGroup;
 			children = (
+				3840688216BA607BDD78147A,
+				1A46CB9C07178A5D52CC2195,
 				FDA99A3EEFEBD66802B52052,
 				A80A4C7859B9EFC429E4FE13,
 				08BF1337BD264DAAB74BC8FD,
@@ -2022,6 +2042,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				121BF9AC777206BE1B0432C9,
 				9A3F9B0543946F22707F2A23,
 				A2ACC48D70DDEF1DA4354D5B,
 				3EA447F10DE1D6C4450EE572,

@@ -40,11 +40,8 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <PathRunnable
-         runnableDebuggingMode = "0"
-         FilePath = "/Applications/Ableton Live 10 Suite.app">
-      </PathRunnable>
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "FE4EE8E464BE81A01F341CC6"
@@ -52,7 +49,7 @@
             BlueprintName = "Perlin-Noise - Standalone Plugin"
             ReferencedContainer = "container:Perlin-Noise.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"

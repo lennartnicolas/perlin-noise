@@ -7,8 +7,9 @@
 */
 
 #pragma once
-#include "PerlinNoise.h"
-#include "PerlinWave.h"
+
+#include <JuceHeader.h>
+
 
 //==============================================================================
 /**
@@ -54,19 +55,8 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
     
     //==============================================================================
-    void createWavetable();
     
-    juce::AudioSampleBuffer getWaveTable(){
-        return _pnTable;
-    }
-    
-
 private:
-    juce::AudioSampleBuffer _pnTable;
-    PerlinNoise _pnNoise;
-    float _x = 0.f;
-    const unsigned int _pnTableSize = 1 << 7;
-    PerlinWave* _waveTableOscillator;
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PerlinNoiseAudioProcessor)

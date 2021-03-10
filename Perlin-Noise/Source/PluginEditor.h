@@ -10,6 +10,7 @@
 
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
+#include "WaveGUI.h"
 
 //==============================================================================
 /**
@@ -26,6 +27,7 @@ public:
 
 private:
     PerlinNoiseAudioProcessor& audioProcessor;
-
+    WaveGUI _waveTableObject;
+    
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PerlinNoiseAudioProcessorEditor)
 };
