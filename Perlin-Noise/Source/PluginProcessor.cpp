@@ -9,8 +9,10 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
+
+
 //==============================================================================
-PerlinNoiseAudioProcessor::PerlinNoiseAudioProcessor()
+PNAudioProcessor::PNAudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
      : AudioProcessor (BusesProperties()
                      #if ! JucePlugin_IsMidiEffect
@@ -19,22 +21,22 @@ PerlinNoiseAudioProcessor::PerlinNoiseAudioProcessor()
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
-                       )
+                       ), _valueTree(*this, nullptr, "Parameters", createParameters())
 #endif
 {
 }
 
-PerlinNoiseAudioProcessor::~PerlinNoiseAudioProcessor()
+PNAudioProcessor::~PNAudioProcessor()
 {
 }
 
 //==============================================================================
-const juce::String PerlinNoiseAudioProcessor::getName() const
+const juce::String PNAudioProcessor::getName() const
 {
     return JucePlugin_Name;
 }
 
-bool PerlinNoiseAudioProcessor::acceptsMidi() const
+bool PNAudioProcessor::acceptsMidi() const
 {
    #if JucePlugin_WantsMidiInput
     return true;
@@ -43,7 +45,7 @@ bool PerlinNoiseAudioProcessor::acceptsMidi() const
    #endif
 }
 
-bool PerlinNoiseAudioProcessor::producesMidi() const
+bool PNAudioProcessor::producesMidi() const
 {
    #if JucePlugin_ProducesMidiOutput
     return true;
@@ -52,7 +54,7 @@ bool PerlinNoiseAudioProcessor::producesMidi() const
    #endif
 }
 
-bool PerlinNoiseAudioProcessor::isMidiEffect() const
+bool PNAudioProcessor::isMidiEffect() const
 {
    #if JucePlugin_IsMidiEffect
     return true;
@@ -61,47 +63,55 @@ bool PerlinNoiseAudioProcessor::isMidiEffect() const
    #endif
 }
 
-double PerlinNoiseAudioProcessor::getTailLengthSeconds() const
+double PNAudioProcessor::getTailLengthSeconds() const
 {
     return 0.0;
 }
 
-int PerlinNoiseAudioProcessor::getNumPrograms()
+int PNAudioProcessor::getNumPrograms()
 {
     return 1;   // NB: some hosts don't cope very well if you tell them there are 0 programs,
                 // so this should be at least 1, even if you're not really implementing programs.
 }
 
-int PerlinNoiseAudioProcessor::getCurrentProgram()
+int PNAudioProcessor::getCurrentProgram()
 {
     return 0;
 }
 
-void PerlinNoiseAudioProcessor::setCurrentProgram (int index)
+void PNAudioProcessor::setCurrentProgram (int index)
 {
 }
 
-const juce::String PerlinNoiseAudioProcessor::getProgramName (int index)
+const juce::String PNAudioProcessor::getProgramName (int index)
 {
     return {};
 }
 
-void PerlinNoiseAudioProcessor::changeProgramName (int index, const juce::String& newName)
+void PNAudioProcessor::changeProgramName (int index, const juce::String& newName)
 {
 }
 
 //==============================================================================
-void PerlinNoiseAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
+void PNAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-
+    _currentSampleRate = sampleRate;
+    _frequency = 1000;
+    _level = 0.75;
+    createWaveTable();
+    _wOsc = new WaveOsc(_waveTable);
+    _wOsc->setFrequency(_frequency, sampleRate);
+    
 }
 
-void PerlinNoiseAudioProcessor::releaseResources()
+void PNAudioProcessor::releaseResources()
 {
+    // When playback stops, you can use this as an opportunity to free up any
+    // spare memory, etc.
 }
 
 #ifndef JucePlugin_PreferredChannelConfigurations
-bool PerlinNoiseAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
+bool PNAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
 {
   #if JucePlugin_IsMidiEffect
     juce::ignoreUnused (layouts);
@@ -126,7 +136,7 @@ bool PerlinNoiseAudioProcessor::isBusesLayoutSupported (const BusesLayout& layou
 }
 #endif
 
-void PerlinNoiseAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
+void PNAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
     juce::ScopedNoDenormals noDenormals;
     auto totalNumInputChannels  = getTotalNumInputChannels();
@@ -134,34 +144,40 @@ void PerlinNoiseAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, 
 
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
+    
+    auto frequency = _valueTree.getRawParameterValue("FREQUENCY")->load();
+    _wOsc->setFrequency(frequency, _currentSampleRate);
 
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
         auto* channelData = buffer.getWritePointer (channel);
-                
+        for(auto sample = 0; sample < buffer.getNumSamples(); sample++)
+        {
+            channelData[sample] = _wOsc->getNextSample() * _level;
+        }
     }
 }
 
 //==============================================================================
-bool PerlinNoiseAudioProcessor::hasEditor() const
+bool PNAudioProcessor::hasEditor() const
 {
     return true; // (change this to false if you choose to not supply an editor)
 }
 
-juce::AudioProcessorEditor* PerlinNoiseAudioProcessor::createEditor()
+juce::AudioProcessorEditor* PNAudioProcessor::createEditor()
 {
-    return new PerlinNoiseAudioProcessorEditor (*this);
+    return new PNAudioProcessorEditor (*this);
 }
 
 //==============================================================================
-void PerlinNoiseAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
+void PNAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
 {
     // You should use this method to store your parameters in the memory block.
     // You could do that either as raw data, or use the XML or ValueTree classes
     // as intermediaries to make it easy to save and load complex data.
 }
 
-void PerlinNoiseAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
+void PNAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
@@ -171,8 +187,50 @@ void PerlinNoiseAudioProcessor::setStateInformation (const void* data, int sizeI
 // This creates new instances of the plugin..
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
-    return new PerlinNoiseAudioProcessor();
+    return new PNAudioProcessor();
 }
 
-//==============================================================================
 
+//==============================================================================
+juce::AudioProcessorValueTreeState::ParameterLayout PNAudioProcessor::createParameters()
+{
+    std::vector<std::unique_ptr<juce::RangedAudioParameter> > params;
+    
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("FREQUENCY", "Frequency", 20.0f, 2000.0f, 440.0f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("LEVEL", "Level", 0.0, 1.0f, 0.75f));
+
+    return {params.begin(), params.end()};
+}
+
+
+juce::AudioProcessorValueTreeState* PNAudioProcessor::getValueTree()
+{
+    return &_valueTree;
+}
+
+void PNAudioProcessor::createWaveTable()
+{
+    _waveTable.setSize(1, (int) _waveTableSize + 1);
+    _waveTable.clear();
+    
+    auto* samples = _waveTable.getWritePointer(0);
+    
+    auto& random = juce::Random::getSystemRandom();
+    _pnNoise.noiseSeed(random.nextInt());
+    
+    float _x = 0.0f;
+    
+    for(unsigned int i = 0; i < _waveTableSize; ++i){
+        float sample = _pnNoise.noise(_x);
+        samples[i] = sample;
+        _x += 0.005;
+    }
+    
+    samples[_waveTableSize] = samples[0];
+}
+
+
+juce::AudioSampleBuffer& PNAudioProcessor::getWaveTable()
+{
+    return _waveTable;
+}

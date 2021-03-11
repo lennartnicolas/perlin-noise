@@ -38,10 +38,10 @@
  #define JucePlugin_Enable_IAA             0
 #endif
 #ifndef  JucePlugin_Name
- #define JucePlugin_Name                   "Perlin-Noise"
+ #define JucePlugin_Name                   "PerlinNoise"
 #endif
 #ifndef  JucePlugin_Desc
- #define JucePlugin_Desc                   "Perlin-Noise"
+ #define JucePlugin_Desc                   "PerlinNoise"
 #endif
 #ifndef  JucePlugin_Manufacturer
  #define JucePlugin_Manufacturer           "yourcompany"
@@ -56,7 +56,7 @@
  #define JucePlugin_ManufacturerCode       0x4d616e75
 #endif
 #ifndef  JucePlugin_PluginCode
- #define JucePlugin_PluginCode             0x586b7564
+ #define JucePlugin_PluginCode             0x53677178
 #endif
 #ifndef  JucePlugin_IsSynth
  #define JucePlugin_IsSynth                0
@@ -149,7 +149,7 @@
  #define JucePlugin_IAASubType             JucePlugin_PluginCode
 #endif
 #ifndef  JucePlugin_IAAName
- #define JucePlugin_IAAName                "yourcompany: Perlin-Noise"
+ #define JucePlugin_IAAName                "yourcompany: PerlinNoise"
 #endif
 #ifndef  JucePlugin_VSTNumMidiInputs
  #define JucePlugin_VSTNumMidiInputs       16

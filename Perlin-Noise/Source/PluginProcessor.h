@@ -9,17 +9,18 @@
 #pragma once
 
 #include <JuceHeader.h>
-
+#include "PerlinNoise.h"
+#include "WaveOsc.h"
 
 //==============================================================================
 /**
 */
-class PerlinNoiseAudioProcessor  : public juce::AudioProcessor
+class PNAudioProcessor  : public juce::AudioProcessor
 {
 public:
     //==============================================================================
-    PerlinNoiseAudioProcessor();
-    ~PerlinNoiseAudioProcessor() override;
+    PNAudioProcessor();
+    ~PNAudioProcessor() override;
 
     //==============================================================================
     void prepareToPlay (double sampleRate, int samplesPerBlock) override;
@@ -55,9 +56,29 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
     
     //==============================================================================
+    juce::AudioProcessorValueTreeState* getValueTree();
+    void createWaveTable();
     
+    void setTableSize(unsigned int tableSize);
+    
+    juce::AudioSampleBuffer& getWaveTable();
+
 private:
+    float _frequency;
+    float _level;
+    float _currentSampleRate;
+    
+    WaveOsc* _wOsc;
+    
+    juce::AudioSampleBuffer _waveTable;
+    unsigned int _waveTableSize = 1 << 8;
+    PerlinNoise _pnNoise;
+    
+    juce::AudioProcessorValueTreeState _valueTree;
+    juce::AudioProcessorValueTreeState::ParameterLayout createParameters();
+    
+    
     
     //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PerlinNoiseAudioProcessor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PNAudioProcessor)
 };

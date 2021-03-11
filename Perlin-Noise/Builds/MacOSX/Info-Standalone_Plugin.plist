@@ -10,9 +10,9 @@
     <key>CFBundleIdentifier</key>
     <string>com.yourcompany.PerlinNoise</string>
     <key>CFBundleName</key>
-    <string>Perlin-Noise</string>
+    <string>PerlinNoise</string>
     <key>CFBundleDisplayName</key>
-    <string>Perlin-Noise</string>
+    <string>PerlinNoise</string>
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleSignature</key>

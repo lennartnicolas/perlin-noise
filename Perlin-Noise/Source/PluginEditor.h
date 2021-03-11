@@ -10,24 +10,28 @@
 
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
-#include "WaveGUI.h"
+#include "DrawWavetable.h"
 
 //==============================================================================
 /**
 */
-class PerlinNoiseAudioProcessorEditor  : public juce::AudioProcessorEditor
+class PNAudioProcessorEditor  : public juce::AudioProcessorEditor
 {
 public:
-    PerlinNoiseAudioProcessorEditor (PerlinNoiseAudioProcessor&);
-    ~PerlinNoiseAudioProcessorEditor() override;
+    PNAudioProcessorEditor (PNAudioProcessor&);
+    ~PNAudioProcessorEditor() override;
 
     //==============================================================================
     void paint (juce::Graphics&) override;
     void resized() override;
 
 private:
-    PerlinNoiseAudioProcessor& audioProcessor;
-    WaveGUI _waveTableObject;
+    juce::Slider _freqSlider;
+    DrawWavetable* _drawWave;
+
+    PNAudioProcessor& audioProcessor;
     
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PerlinNoiseAudioProcessorEditor)
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> _freqSliderAttachment;
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PNAudioProcessorEditor)
 };
