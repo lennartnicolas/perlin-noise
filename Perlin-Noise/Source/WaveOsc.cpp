@@ -10,7 +10,7 @@
 
 #include "WaveOsc.h"
 
-WaveOsc::WaveOsc(const juce::AudioSampleBuffer& wavetableToUse):  wavetable(wavetableToUse),
+WaveOsc::WaveOsc(const juce::AudioSampleBuffer& wavetableToUse) :  wavetable(wavetableToUse),
 tableSize(wavetable.getNumSamples() - 1)
 {
     jassert (wavetable.getNumChannels() == 1);
@@ -18,7 +18,8 @@ tableSize(wavetable.getNumSamples() - 1)
 
 void WaveOsc::setFrequency(float frequency, float sampleRate)
 {
-    tableDelta = frequency * ((float) tableSize / sampleRate);
+    auto tableSizeOverSampleRate = (float) tableSize / sampleRate;
+    tableDelta = frequency * tableSizeOverSampleRate;
 }
 
 float WaveOsc::getNextSample() noexcept
@@ -34,8 +35,10 @@ float WaveOsc::getNextSample() noexcept
 
     auto currentSample = value0 + frac * (value1 - value0);
 
-    if ((currentIndex += tableDelta) > (float) tableSize)
+    if ((currentIndex += tableDelta) > (float) tableSize){
         currentIndex -= (float) tableSize;
+    }
+        
 
     return currentSample;
 }

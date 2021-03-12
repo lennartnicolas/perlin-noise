@@ -27,11 +27,13 @@ public:
 
 private:
     juce::Slider _freqSlider;
+    juce::Slider _levelSlider;
     DrawWavetable* _drawWave;
+
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> _freqSliderAttachment;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> _levelSliderAttachment;
 
     PNAudioProcessor& audioProcessor;
     
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> _freqSliderAttachment;
-
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PNAudioProcessorEditor)
 };

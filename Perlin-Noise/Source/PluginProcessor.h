@@ -58,18 +58,16 @@ public:
     //==============================================================================
     juce::AudioProcessorValueTreeState* getValueTree();
     void createWaveTable();
-    
     void setTableSize(unsigned int tableSize);
-    
     juce::AudioSampleBuffer& getWaveTable();
 
 private:
     float _frequency;
     float _level;
     float _currentSampleRate;
-    
+
     WaveOsc* _wOsc;
-    
+
     juce::AudioSampleBuffer _waveTable;
     unsigned int _waveTableSize = 1 << 8;
     PerlinNoise _pnNoise;

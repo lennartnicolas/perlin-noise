@@ -10,7 +10,6 @@
 #include "PluginEditor.h"
 
 
-
 //==============================================================================
 PNAudioProcessor::PNAudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
@@ -24,10 +23,13 @@ PNAudioProcessor::PNAudioProcessor()
                        ), _valueTree(*this, nullptr, "Parameters", createParameters())
 #endif
 {
+
+
 }
 
 PNAudioProcessor::~PNAudioProcessor()
 {
+
 }
 
 //==============================================================================
@@ -95,13 +97,14 @@ void PNAudioProcessor::changeProgramName (int index, const juce::String& newName
 //==============================================================================
 void PNAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    _currentSampleRate = sampleRate;
-    _frequency = 1000;
-    _level = 0.75;
     createWaveTable();
     _wOsc = new WaveOsc(_waveTable);
+    _frequency = 440;
+    _level = 0.5;
     _wOsc->setFrequency(_frequency, sampleRate);
-    
+    _currentSampleRate = sampleRate;
+
+
 }
 
 void PNAudioProcessor::releaseResources()
@@ -145,16 +148,19 @@ void PNAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::Mid
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
     
-    auto frequency = _valueTree.getRawParameterValue("FREQUENCY")->load();
-    _wOsc->setFrequency(frequency, _currentSampleRate);
+//    _frequency = _valueTree.getRawParameterValue("FREQUENCY")->load();
+//    _level = _valueTree.getRawParameterValue("LEVEL")->load();
+//
+//    _wOsc->setFrequency(_frequency, _currentSampleRate);
 
-    for (int channel = 0; channel < totalNumInputChannels; ++channel)
+    auto* leftBuffer = buffer.getWritePointer(0);
+    auto* rightBuffer = buffer.getWritePointer(1);
+    
+    for(int i = 0; i < buffer.getNumSamples(); ++i)
     {
-        auto* channelData = buffer.getWritePointer (channel);
-        for(auto sample = 0; sample < buffer.getNumSamples(); sample++)
-        {
-            channelData[sample] = _wOsc->getNextSample() * _level;
-        }
+        auto sample = _wOsc->getNextSample() * _level;
+        leftBuffer[i] = sample;
+        rightBuffer[i] = sample;
     }
 }
 
@@ -215,18 +221,25 @@ void PNAudioProcessor::createWaveTable()
     
     auto* samples = _waveTable.getWritePointer(0);
     
-    auto& random = juce::Random::getSystemRandom();
-    _pnNoise.noiseSeed(random.nextInt());
-    
-    float _x = 0.0f;
-    
-    for(unsigned int i = 0; i < _waveTableSize; ++i){
-        float sample = _pnNoise.noise(_x);
-        samples[i] = sample;
-        _x += 0.005;
+    for(int i = 0; i < _waveTableSize; i++)
+    {
+        samples[i] = (std::sin(juce::MathConstants<float>::twoPi * i / _waveTableSize)+1)/2;
     }
     
     samples[_waveTableSize] = samples[0];
+    
+//    auto& random = juce::Random::getSystemRandom();
+//    _pnNoise.noiseSeed(random.nextInt());
+//
+//      float _x = 0.0f;
+//
+//    for(unsigned int i = 0; i < _waveTableSize; ++i){
+//        float sample = _pnNoise.noise(_x);
+//        samples[i] = sample;
+//        _x += 0.005;
+//    }
+//
+
 }
 
 

@@ -20,7 +20,6 @@ class DrawWavetable  : public juce::Component
 public:
     DrawWavetable(const juce::AudioSampleBuffer& waveTableToDraw) : _buffer(waveTableToDraw)
     {
-
     }
 
     ~DrawWavetable() override
@@ -29,10 +28,12 @@ public:
 
     void paint (juce::Graphics& g) override
     {
+        points.clear();
+        g.fillAll(juce::Colours::grey);
         g.setColour(juce::Colours::white);
+   
         for(int x = 0; x < getWidth(); ++x){
-            int sampleIndex = x % _buffer.getNumSamples();
-            float y = (1.f - _buffer.getSample(0, sampleIndex)) * getHeight();
+            float y = getBufferSample() * getHeight();
             points.push_back(juce::Point<float> (x, y));
         }
         
@@ -48,9 +49,34 @@ public:
         // components that your component contains..
 
     }
+    
+    float getBufferSample(){
+        
+        tableDelta = (float) (_buffer.getNumSamples() - 1) / (float) getWidth();
+
+        auto index0 = (unsigned int) currentIndex;
+        auto index1 = index0 + 1;
+        
+        auto frac = currentIndex - (float) index0;
+        
+        auto* table = _buffer.getReadPointer(0);
+        auto value0 = table[index0];
+        auto value1 = table[index1];
+        
+        auto currentSample = value0 + frac * (value1 - value0);
+
+        if ((currentIndex += tableDelta) > (float) (_buffer.getNumSamples() - 1)){
+            currentIndex -= (float) (_buffer.getNumSamples() - 1);
+        }
+
+        return currentSample;
+    }
+    
+    
 
 private:
     const juce::AudioSampleBuffer& _buffer;
+    float currentIndex = 0.0f, tableDelta = 0.0f;
     std::vector<juce::Point<float> > points;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DrawWavetable)
