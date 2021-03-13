@@ -222,30 +222,33 @@ void PNAudioProcessor::createWaveTable()
     
     auto* samples = _waveTable.getWritePointer(0);
     
-    float _x = 0.01f;
+    float x = 0.01f;
+    float increment = 0.01f;
 
     for(unsigned int i = 0; i <= _waveTableSize; ++i){
-        auto sample = _pnNoise.noise(_x);
+        auto sample = _pnNoise.noise(x);
         samples[i] = sample;
-        _x += _increment;
+        x += increment;
     }
 }
 
 void PNAudioProcessor::updateWaveTable()
 {
     _waveTable.clear();
+    _waveTable.setSize(1, (int) _waveTableSize + 1);
     
     auto& random = juce::Random::getSystemRandom();
-    _pnNoise.noiseSeed(random.nextInt());
+    _pnNoise.noiseSeed(std::abs(random.nextInt()));
     
     auto* samples = _waveTable.getWritePointer(0);
     
-    float _x = 0.01f;
+    float x = 0.01f;
+    float increment = 0.01f;
 
     for(unsigned int i = 0; i <= _waveTableSize; ++i){
-        auto sample = _pnNoise.noise(_x);
+        auto sample = _pnNoise.noise(x);
         samples[i] = sample;
-        _x += _increment;
+        x += increment;
     }
     _wOsc->setWavetable(_waveTable);
 }

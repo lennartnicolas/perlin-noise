@@ -68,15 +68,12 @@ private:
 
     float currentLevel = 1.0f;
     float targetLevel  = 0.1f;
-    float _increment = 0.01f;
     
     WaveOsc* _wOsc;
     juce::AudioSampleBuffer _waveTable;
     unsigned int _waveTableSize = 1 << 8;
     
-    
     PerlinNoise _pnNoise;
-    
     
     juce::AudioProcessorValueTreeState _valueTree;
     juce::AudioProcessorValueTreeState::ParameterLayout createParameters();

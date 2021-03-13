@@ -31,6 +31,8 @@ PNAudioProcessorEditor::PNAudioProcessorEditor (PNAudioProcessor& p)
     _changeTableButton.setClickingTogglesState(true);
     _changeTableButton.onClick = [this, &p](){
         p.updateWaveTable();
+        _drawWave->setWaveTable(p.getWaveTable());
+        _drawWave->repaint();
     };
 
     

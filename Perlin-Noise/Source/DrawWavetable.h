@@ -25,6 +25,11 @@ public:
     ~DrawWavetable() override
     {
     }
+    
+    void setWaveTable(const juce::AudioSampleBuffer& newWaveTable)
+    {
+        _buffer = newWaveTable;
+    }
 
     void paint (juce::Graphics& g) override
     {
@@ -80,7 +85,7 @@ public:
     
 
 private:
-    const juce::AudioSampleBuffer& _buffer;
+    juce::AudioSampleBuffer _buffer;
     float currentIndex = 0.0f, tableDelta = 0.0f;
     std::vector<juce::Point<float> > points;
     

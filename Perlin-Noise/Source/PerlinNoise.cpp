@@ -98,6 +98,7 @@ void PerlinNoise::noiseDetail(int octaves, float falloff){
 }
 
 void PerlinNoise::noiseSeed(u_int32_t seed){
+    perlin.clear();
     std::minstd_rand lcg(seed);
     for(int i = 0; i < PERLIN_SIZE + 1; i++)
         perlin.push_back((float)lcg() / (float)lcg._Max);
