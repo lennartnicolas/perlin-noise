@@ -58,24 +58,28 @@ public:
     //==============================================================================
     juce::AudioProcessorValueTreeState* getValueTree();
     void createWaveTable();
-    void setTableSize(unsigned int tableSize);
+    void updateWaveTable();
     juce::AudioSampleBuffer& getWaveTable();
 
 private:
-    float _frequency;
-    float _level;
-    float _currentSampleRate;
+    std::atomic<float>* _frequencyParameter = nullptr;
+    std::atomic<float>* _levelParameter = nullptr;
+    std::atomic<float>* _changeWavetableParameter = nullptr;
 
+    float currentLevel = 1.0f;
+    float targetLevel  = 0.1f;
+    float _increment = 0.01f;
+    
     WaveOsc* _wOsc;
-
     juce::AudioSampleBuffer _waveTable;
     unsigned int _waveTableSize = 1 << 8;
+    
+    
     PerlinNoise _pnNoise;
+    
     
     juce::AudioProcessorValueTreeState _valueTree;
     juce::AudioProcessorValueTreeState::ParameterLayout createParameters();
-    
-    
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PNAudioProcessor)

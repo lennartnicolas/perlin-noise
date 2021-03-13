@@ -28,15 +28,19 @@ public:
 
     void paint (juce::Graphics& g) override
     {
-        points.clear();
         g.fillAll(juce::Colours::grey);
         g.setColour(juce::Colours::white);
-   
+        
+        points.clear();
+        
         for(int x = 0; x < getWidth(); ++x){
+//            std::cout << "x : " << x << std::endl;
+//            std::cout << "Buffersample : " << getBufferSample() << std::endl;
+//
             float y = getBufferSample() * getHeight();
             points.push_back(juce::Point<float> (x, y));
         }
-        
+   
         for(int i = 0; i < points.size() - 1; ++i){
             juce::Line<float> line(points[i], points[i + 1]);
             g.drawLine(line, 2.0f);
@@ -49,10 +53,11 @@ public:
         // components that your component contains..
 
     }
+
     
     float getBufferSample(){
         
-        tableDelta = (float) (_buffer.getNumSamples() - 1) / (float) getWidth();
+        tableDelta = (float) (_buffer.getNumSamples() - 1) / (float) (getWidth());
 
         auto index0 = (unsigned int) currentIndex;
         auto index1 = index0 + 1;

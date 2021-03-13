@@ -28,8 +28,13 @@ public:
 private:
     juce::Slider _freqSlider;
     juce::Slider _levelSlider;
-    DrawWavetable* _drawWave;
 
+    
+    juce::TextButton _changeTableButton;
+
+
+    DrawWavetable* _drawWave;
+    
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> _freqSliderAttachment;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> _levelSliderAttachment;
 

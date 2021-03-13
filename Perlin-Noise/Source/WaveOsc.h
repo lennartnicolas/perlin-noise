@@ -17,9 +17,11 @@ public:
     WaveOsc(const juce::AudioSampleBuffer& wavetableToUse);
     void setFrequency(float frequency, float sampleRate);
     float getNextSample() noexcept;
+    void setWavetable(const juce::AudioSampleBuffer& newWavetable);
     
 private:
-    const juce::AudioSampleBuffer& wavetable;
+    juce::AudioSampleBuffer wavetable;
     const int tableSize;
     float currentIndex = 0.0f, tableDelta = 0.0f;
+    float _level = 1.f;
 };

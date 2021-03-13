@@ -17,6 +17,7 @@ PNAudioProcessorEditor::PNAudioProcessorEditor (PNAudioProcessor& p)
     addAndMakeVisible(_drawWave);
     addAndMakeVisible(_freqSlider);
     addAndMakeVisible(_levelSlider);
+    addAndMakeVisible(_changeTableButton);
     
     _freqSlider.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
     _freqSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
@@ -26,7 +27,14 @@ PNAudioProcessorEditor::PNAudioProcessorEditor (PNAudioProcessor& p)
     _levelSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
     _levelSliderAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(*audioProcessor.getValueTree(), "LEVEL" , _levelSlider);
     
-    setSize (400, 300);
+    _changeTableButton.setButtonText("Change Waveform");
+    _changeTableButton.setClickingTogglesState(true);
+    _changeTableButton.onClick = [this, &p](){
+        p.updateWaveTable();
+    };
+
+    
+    setSize (700, 500);
 }
 
 PNAudioProcessorEditor::~PNAudioProcessorEditor()
@@ -42,9 +50,9 @@ void PNAudioProcessorEditor::paint (juce::Graphics& g)
 
 void PNAudioProcessorEditor::resized()
 {
-    
-    _drawWave->setBounds(0, 0, getWidth(), getHeight()/2);
+    _drawWave->setBounds(0, 0, getWidth(), getHeight() / 2);
     _freqSlider.setBounds(getWidth()/2, getHeight()/2, 100, 100);
     _levelSlider.setBounds(getWidth()/2 , getHeight()/2 + 50
                            , 100, 100);
+    _changeTableButton.setBounds(0, getHeight()/2, 100, 30);
 }

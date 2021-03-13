@@ -22,6 +22,12 @@ void WaveOsc::setFrequency(float frequency, float sampleRate)
     tableDelta = frequency * tableSizeOverSampleRate;
 }
 
+void WaveOsc::setWavetable(const juce::AudioSampleBuffer& newWavetable)
+{
+    wavetable = newWavetable;
+}
+
+
 float WaveOsc::getNextSample() noexcept
 {
     auto index0 = (unsigned int) currentIndex;
@@ -40,5 +46,5 @@ float WaveOsc::getNextSample() noexcept
     }
         
 
-    return currentSample;
+    return currentSample * _level;
 }
