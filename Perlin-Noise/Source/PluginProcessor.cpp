@@ -25,7 +25,7 @@ PNAudioProcessor::PNAudioProcessor()
 {
     _frequencyParameter       = _valueTree.getRawParameterValue("FREQUENCY");
     _levelParameter           = _valueTree.getRawParameterValue("LEVEL");
-    createWaveTable();
+    initWaveTable();
     _wOsc = new WaveOsc(_waveTable);
 }
 
@@ -215,7 +215,7 @@ juce::AudioProcessorValueTreeState* PNAudioProcessor::getValueTree()
     return &_valueTree;
 }
 
-void PNAudioProcessor::createWaveTable()
+void PNAudioProcessor::initWaveTable()
 {
     _waveTable.setSize(1, (int) _waveTableSize + 1);
     _waveTable.clear();
@@ -223,32 +223,27 @@ void PNAudioProcessor::createWaveTable()
     auto* samples = _waveTable.getWritePointer(0);
     
     float x = 0.01f;
-    float increment = 0.01f;
 
     for(unsigned int i = 0; i <= _waveTableSize; ++i){
         auto sample = _pnNoise.noise(x);
         samples[i] = sample;
-        x += increment;
+        x += 0.01f;
     }
 }
 
-void PNAudioProcessor::updateWaveTable()
+void PNAudioProcessor::updateWaveTable(float noiseIncrement, int seed)
 {
     _waveTable.clear();
-    _waveTable.setSize(1, (int) _waveTableSize + 1);
-    
-    auto& random = juce::Random::getSystemRandom();
-    _pnNoise.noiseSeed(std::abs(random.nextInt()));
     
     auto* samples = _waveTable.getWritePointer(0);
+    _pnNoise.noiseSeed(std::abs(seed));
     
     float x = 0.01f;
-    float increment = 0.01f;
 
     for(unsigned int i = 0; i <= _waveTableSize; ++i){
         auto sample = _pnNoise.noise(x);
         samples[i] = sample;
-        x += increment;
+        x += noiseIncrement;
     }
     _wOsc->setWavetable(_waveTable);
 }

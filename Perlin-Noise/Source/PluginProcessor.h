@@ -57,8 +57,9 @@ public:
     
     //==============================================================================
     juce::AudioProcessorValueTreeState* getValueTree();
-    void createWaveTable();
-    void updateWaveTable();
+    void initWaveTable();
+    void updateWaveTable(float noiseIncrement = 0.01f, int seed = 0);
+    void interpolateWaveTable(float interpAmount);
     juce::AudioSampleBuffer& getWaveTable();
 
 private:

@@ -39,9 +39,6 @@ public:
         points.clear();
         
         for(int x = 0; x < getWidth(); ++x){
-//            std::cout << "x : " << x << std::endl;
-//            std::cout << "Buffersample : " << getBufferSample() << std::endl;
-//
             float y = getBufferSample() * getHeight();
             points.push_back(juce::Point<float> (x, y));
         }

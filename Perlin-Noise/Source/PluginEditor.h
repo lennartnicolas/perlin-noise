@@ -28,6 +28,7 @@ public:
 private:
     juce::Slider _freqSlider;
     juce::Slider _levelSlider;
+    juce::Slider _interpolate;
 
     
     juce::TextButton _changeTableButton;
