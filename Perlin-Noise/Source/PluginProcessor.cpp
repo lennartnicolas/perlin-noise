@@ -203,7 +203,8 @@ juce::AudioProcessorValueTreeState::ParameterLayout PNAudioProcessor::createPara
 {
     std::vector<std::unique_ptr<juce::RangedAudioParameter> > params;
     
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("FREQUENCY", "Frequency", 20.0f, 2000.0f, 440.0f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("FREQUENCY", "Frequency",
+                                                                 juce::NormalisableRange<float>(20.f, 10000.f, 0.f, 0.6f), 440.f));
     params.push_back(std::make_unique<juce::AudioParameterFloat>("LEVEL", "Level", 0.0, 1.0f, 1.0f));
     params.push_back(std::make_unique<juce::AudioParameterBool>("BUTTON", "Button", false));
     return {params.begin(), params.end()};

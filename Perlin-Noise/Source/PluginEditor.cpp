@@ -21,7 +21,7 @@ PNAudioProcessorEditor::PNAudioProcessorEditor (PNAudioProcessor& p)
     addAndMakeVisible(_interpolate);
     
     _freqSlider.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
-    _freqSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
+    _freqSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 100, 30);
     _freqSliderAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(*audioProcessor.getValueTree(), "FREQUENCY", _freqSlider);
     
     _levelSlider.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);

@@ -14,7 +14,6 @@
 class WaveOsc
 {
 public:
-    WaveOsc();
     WaveOsc(const juce::AudioSampleBuffer& wavetableToUse);
     void setFrequency(float frequency, float sampleRate);
     float getNextSample() noexcept;
