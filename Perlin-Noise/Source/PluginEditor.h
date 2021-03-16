@@ -28,11 +28,13 @@ public:
 private:
     juce::Slider _freqSlider;
     juce::Slider _levelSlider;
-    juce::Slider _interpolate;
+    juce::Slider _incrementSlider;
+    juce::Slider _interpolateSineSlider;
 
-    
-    juce::TextButton _changeTableButton;
-
+    juce::Label _freqLabel;
+    juce::Label _levelLabel;
+    juce::Label _incrementLabel;
+    juce::Label _flattenLabel;
 
     DrawWavetable* _drawWave;
     

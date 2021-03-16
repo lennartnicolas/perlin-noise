@@ -15,9 +15,9 @@ PNAudioProcessor::PNAudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
      : AudioProcessor (BusesProperties()
                      #if ! JucePlugin_IsMidiEffect
-                      #if ! JucePlugin_IsSynth
-                       .withInput  ("Input",  juce::AudioChannelSet::stereo(), true)
-                      #endif
+//                      #if ! JucePlugin_IsSynth
+//                       .withInput  ("Input",  juce::AudioChannelSet::stereo(), true)
+//                      #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
                        ), _valueTree(*this, nullptr, "Parameters", createParameters())
@@ -204,9 +204,9 @@ juce::AudioProcessorValueTreeState::ParameterLayout PNAudioProcessor::createPara
     std::vector<std::unique_ptr<juce::RangedAudioParameter> > params;
     
     params.push_back(std::make_unique<juce::AudioParameterFloat>("FREQUENCY", "Frequency",
-                                                                 juce::NormalisableRange<float>(20.f, 10000.f, 0.f, 0.6f), 440.f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("LEVEL", "Level", 0.0, 1.0f, 1.0f));
-    params.push_back(std::make_unique<juce::AudioParameterBool>("BUTTON", "Button", false));
+                                                                 juce::NormalisableRange<float>(20.f, 5000.f, 0.1f, 0.4f), 200.f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("LEVEL", "Level", 0.0, 1.0f, 0.5f));
+    
     return {params.begin(), params.end()};
 }
 
@@ -230,6 +230,8 @@ void PNAudioProcessor::initWaveTable()
         samples[i] = sample;
         x += 0.01f;
     }
+    
+    _tempWavetable = _waveTable;
 }
 
 void PNAudioProcessor::updateWaveTable(float noiseIncrement, int seed)
@@ -247,8 +249,21 @@ void PNAudioProcessor::updateWaveTable(float noiseIncrement, int seed)
         x += noiseIncrement;
     }
     _wOsc->setWavetable(_waveTable);
+    _tempWavetable = _waveTable;
 }
 
+void PNAudioProcessor::interpolateWaveTable(float interpAmount)
+{
+    auto* samples = _waveTable.getWritePointer(0);
+    
+    for(unsigned int i = 0; i <= _waveTableSize; ++i)
+    {
+        samples[i] = (1.0f - interpAmount) * _tempWavetable.getSample(0, i) + interpAmount * ((std::sin(juce::MathConstants<float>::twoPi * i / _waveTableSize) + 1) / 2);
+    }
+    
+    _wOsc->setWavetable(_waveTable);
+}
+    
 
 juce::AudioSampleBuffer& PNAudioProcessor::getWaveTable()
 {

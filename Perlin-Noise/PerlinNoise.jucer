@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="sgQXpI" name="PerlinNoise" projectType="audioplug" useAppConfig="0"
-              addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1">
+              addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1"
+              pluginVST3Category="Synth">
   <MAINGROUP id="t7EFVi" name="PerlinNoise">
     <GROUP id="{C8B645E1-D93E-DAC6-DC0F-01BE090DB7BD}" name="Source">
       <FILE id="bZHDHi" name="DrawWavetable.h" compile="0" resource="0" file="Source/DrawWavetable.h"/>

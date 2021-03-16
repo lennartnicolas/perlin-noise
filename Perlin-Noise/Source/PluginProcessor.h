@@ -65,13 +65,14 @@ public:
 private:
     std::atomic<float>* _frequencyParameter = nullptr;
     std::atomic<float>* _levelParameter = nullptr;
-    std::atomic<float>* _changeWavetableParameter = nullptr;
-
+    
     float currentLevel = 1.0f;
     float targetLevel  = 0.1f;
     
     WaveOsc* _wOsc;
     juce::AudioSampleBuffer _waveTable;
+    juce::AudioSampleBuffer _tempWavetable;
+    
     unsigned int _waveTableSize = 1 << 8;
     
     PerlinNoise _pnNoise;
