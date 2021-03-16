@@ -16,4 +16,4 @@ The Perlin-Noise directory contains a JUCE project with a wavetable oscillator  
 
 This plugin should only be considered demonstrating what Perlin noise might sound (and look) like when used in signal processing. Outputting a plane wavetable on a single frequency sounds horrible but using this approach for future projects on waveshaping could be interesting.
 
-For more tutorials and explanations of Perlin Noise I would definitely recommend watching [shiffman's](https://github.com/shiffman) nature of code videos: https://bit.ly/3qPlgsz
+For more tutorials and explanations of Perlin Noise I would definitely recommend watching [Daniel Shiffman's](https://github.com/shiffman) nature of code videos: https://bit.ly/3qPlgsz
